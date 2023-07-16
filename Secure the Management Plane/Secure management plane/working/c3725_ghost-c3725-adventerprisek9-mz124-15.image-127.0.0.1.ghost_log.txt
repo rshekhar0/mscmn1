@@ -1,0 +1,35 @@
+Jul 16 09:54:48.264 slot0: C/H/S settings = 256/4/32
+Jul 16 09:54:48.264 slot1: C/H/S settings = 0/4/32
+Jul 16 09:54:48.627 C3725_BOOT: starting instance (CPU0 PC=0xffffffffbfc00000,idle_pc=0x0,JIT on)
+Jul 16 09:54:48.627 C3725_STOP: stopping simulation.
+Jul 16 09:54:48.627 CPU0: CPU_STATE: Halting CPU (old state=2)...
+Jul 16 09:54:48.685 VM: shutdown procedure engaged.
+Jul 16 09:54:48.685 VM_OBJECT: Shutdown of object "slot1"
+Jul 16 09:54:48.685 DEVICE: Removal of device slot1, fd=-1, host_addr=0x0, flags=2
+Jul 16 09:54:48.685 VM_OBJECT: Shutdown of object "slot0"
+Jul 16 09:54:48.685 DEVICE: Removal of device slot0, fd=-1, host_addr=0x0, flags=2
+Jul 16 09:54:48.685 VM_OBJECT: Shutdown of object "ns16552"
+Jul 16 09:54:48.685 DEVICE: Removal of device ns16552, fd=-1, host_addr=0x0, flags=0
+Jul 16 09:54:48.685 VM_OBJECT: Shutdown of object "mem_bswap"
+Jul 16 09:54:48.685 DEVICE: Removal of device mem_bswap, fd=-1, host_addr=0x0, flags=0
+Jul 16 09:54:48.685 VM_OBJECT: Shutdown of object "rom"
+Jul 16 09:54:48.685 DEVICE: Removal of device rom, fd=23, host_addr=0xf5690000, flags=1
+Jul 16 09:54:48.685 MMAP: unmapping of device 'rom', fd=23, host_addr=0xf5690000, len=0x200000
+Jul 16 09:54:48.686 VM_OBJECT: Shutdown of object "ram"
+Jul 16 09:54:48.686 DEVICE: Removal of device ram, fd=22, host_addr=0xf5890000, flags=2
+Jul 16 09:54:48.686 MMAP: unmapping of device 'ram', fd=22, host_addr=0xf5890000, len=0x8000000
+Jul 16 09:54:48.702 VM_OBJECT: Shutdown of object "gt96100"
+Jul 16 09:54:48.702 DEVICE: Removal of device gt96100, fd=-1, host_addr=0x0, flags=0
+Jul 16 09:54:48.702 VM_OBJECT: Shutdown of object "io_fpga"
+Jul 16 09:54:48.702 DEVICE: Removal of device io_fpga, fd=-1, host_addr=0x0, flags=0
+Jul 16 09:54:48.702 VM_OBJECT: Shutdown of object "ssa"
+Jul 16 09:54:48.702 DEVICE: Removal of device ssa, fd=21, host_addr=0xfd890000, flags=2
+Jul 16 09:54:48.702 MMAP: unmapping of device 'ssa', fd=21, host_addr=0xfd890000, len=0x7000
+Jul 16 09:54:48.702 VM_OBJECT: Shutdown of object "remote_ctrl"
+Jul 16 09:54:48.702 DEVICE: Removal of device remote_ctrl, fd=-1, host_addr=0x0, flags=0
+Jul 16 09:54:48.702 VM: removing PCI busses.
+Jul 16 09:54:48.702 VM: deleting VTTY.
+Jul 16 09:54:48.702 VM: deleting system CPUs.
+Jul 16 09:54:48.702 CPU0: CPU_STATE: Halting CPU (old state=1)...
+Jul 16 09:54:48.702 VM: shutdown procedure completed.
+Jul 16 09:54:48.703 VM: trying to shutdown an inactive VM.
