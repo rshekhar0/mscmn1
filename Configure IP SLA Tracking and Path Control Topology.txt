@@ -1,0 +1,124 @@
+Configure IP SLA Tracking and Path Control Topology
+
+Step 1: Prepare the routers and configure the router hostname and interface addresses.
+
+Router R1
+
+interface Loopback 0
+ip address 192.168.1.1 255.255.255.0
+interface Serial0/0/0
+ip address 209.165.201.2 255.255.255.252
+no shutdown
+interface Serial0/0/1
+ip address 209.165.202.130 255.255.255.252
+no shutdown
+
+Router ISP1 (R2)
+
+interface Loopback0
+ip address 209.165.200.254 255.255.255.255
+interface Loopback1
+ip address 209.165.201.30 255.255.255.255
+interface Serial0/0/0
+ip address 209.165.201.1 255.255.255.252
+no shutdown
+interface Serial0/0/1
+ip address 209.165.200.225 255.255.255.252
+no shutdown
+
+Router ISP2 (R3)
+
+interface Loopback0
+ip address 209.165.200.254 255.255.255.255
+interface Loopback1
+ip address 209.165.202.158 255.255.255.255
+interface Serial0/0/0
+description ISP2 --> R1
+ip address 209.165.202.129 255.255.255.252
+no shutdown
+interface Serial0/0/1
+ip address 209.165.200.226 255.255.255.252
+no shutdown
+
+R1# show interfaces description
+
+
+Router R1
+
+ip route 0.0.0.0 0.0.0.0 209.165.201.1
+Router ISP1 (R2)
+router eigrp 1
+
+network 209.165.200.224 0.0.0.3
+network 209.165.201.0 0.0.0.31
+no auto-summary
+ip route 192.168.1.0 255.255.255.0 209.165.201.2
+
+Router ISP2 (R3)
+
+router eigrp 1
+network 209.165.200.224 0.0.0.3
+network 209.165.202.128 0.0.0.31
+no auto-summary
+ip route 192.168.1.0 255.255.255.0 209.165.202.130
+
+Step 2: Verify server reachability.
+
+R1#tclsh
+R1(tcl)# foreach address {
++>(tcl)# 209.165.200.254
++>(tcl)# 209.165.201.30
++>(tcl)# 209.165.202.158
++>(tcl)# } { ping $address source 192.168.1.1 }
+
+R1(tcl)# foreach address {
++>(tcl)# 209.165.200.254
++>(tcl)# 209.165.201.30
++>(tcl)# 209.165.202.158
++>(tcl)# } { trace $address source 192.168.1.1 }
+
+Step 3: Configure IP SLA probes.
+
+R1(config)# ip sla 11
+R1(config-ip-sla)# icmp-echo 209.165.201.30
+R1(config-ip-sla-echo)# frequency 10
+R1(config-ip-sla-echo)# exit
+R1(config)# ip sla schedule 11 life forever start-time now
+
+R1# show ip sla configuration 11
+
+
+R1# show ip sla statistics
+
+R1# show ip sla configuration 22
+
+R1# show ip sla statistics 22
+
+R1(config)# no ip route 0.0.0.0 0.0.0.0 209.165.201.1
+R1(config)# ip route 0.0.0.0 0.0.0.0 209.165.201.1 5
+R1(config)# exit
+
+R1# show ip route
+
+
+R1(config)# track 1 ip sla 11 reachability
+R1(config-track)#
+
+
+R1# debug ip routing
+R1(config)# ip route 0.0.0.0 0.0.0.0 209.165.201.1 2 track 1
+
+R1# show ip route
+Step 5: Verify IP SLA operation.
+
+ISP1(config)# interface loopback 1
+ISP1(config-if)# shutdown
+
+R1# show ip route
+
+
+R1# show ip sla statistics
+
+R1# trace 209.165.200.254 source 192.168.1.1
+
+R1# show ip sla statistics

@@ -1,0 +1,72 @@
+Using the AS_PATH Attribute
+
+Router R1 (hostname Andheri)
+
+Andheri(config)# interface Loopback0
+Andheri(config-if)# ip address 10.1.1.1 255.255.255.0
+Andheri(config-if)# exit
+Andheri(config)# interface Serial0/0/0
+Andheri(config-if)# ip address 192.168.1.5 255.255.255.252
+Andheri(config-if)# no shutdown
+Andheri(config-if)# end
+Andheri#
+
+Router R2 (hostname Bandra)
+
+Bandra(config)# interface Loopback0
+Bandra(config-if)# ip address 10.2.2.1 255.255.255.0
+Bandra(config-if)# interface Serial0/0/0
+Bandra(config-if)# ip address 192.168.1.6 255.255.255.252
+Bandra(config-if)# no shutdown
+Bandra(config-if)# exit
+Bandra(config)# interface Serial0/0/1
+Bandra(config-if)# ip address 172.24.1.17 255.255.255.252
+Bandra(config-if)# no shutdown
+Bandra(config-if)# end
+Bandra#
+
+Router R3 (hostname ChurchGate)
+
+Churchgate(config)# interface Loopback0
+Churchgate(config-if)# ip address 10.3.3.1 255.255.255.0
+Churchgate(config-if)# exit
+Churchgate(config)# interface Serial0/0/1
+Churchgate(config-if)# ip address 172.24.1.18 255.255.255.252
+Churchgate(config-if)# no shutdown
+Churchgate(config-if)# end
+Churchgate#
+
+Step 3 : Configure BGP.
+
+Andheri(config)# router bgp 100
+Andheri(config-router)# neighbor 192.168.1.6 remote-as 300
+Andheri(config-router)# network 10.1.1.0 mask 255.255.255.0
+Bandra(config)# router bgp 300
+Bandra(config-router)# neighbor 192.168.1.5 remote-as 100
+Bandra(config-router)# neighbor 172.24.1.18 remote-as 65000
+Bandra(config-router)# network 10.2.2.0 mask 255.255.255.0
+ 
+Churchgate(config)# router bgp 65000
+Churchgate(config-router)# neighbor 172.24.1.17 remote-as 300
+Churchgate(config-router)# network 10.3.3.0 mask 255.255.255.0
+
+Bandra# show ip bgp neighbors
+ 
+Step 4 : Remove the private AS.
+
+Andheri#show ip route
+
+Andheri# show ip bgp
+
+Step 5 : Use the AS_PATH attribute to filter routes.
+
+Bandra(config)# ip as-path access-list 1 deny ^100$
+Bandra(config)# ip as-path access-list 1 permit .*
+
+Bandra(config)# router bgp 300
+Bandra (config-router)# neighbor 192.168.1.5 remove-private-as
+
+Andheri# show ip route
+ 
+Bandra# show ip bgp regexp ^100$
+
